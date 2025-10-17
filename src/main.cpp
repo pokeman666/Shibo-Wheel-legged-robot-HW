@@ -130,6 +130,13 @@ static const adc_bits_width_t width = ADC_WIDTH_BIT_12;
 static const adc_atten_t atten = ADC_ATTEN_DB_11;
 static const adc_unit_t unit = ADC_UNIT_1;
 
+//小车前端装饰灯
+#define NUM_LEDS 2
+#define DATA_PIN 21
+#define COLOR_ORDER GRB
+uint8_t max_bright = 64;
+CRGB leds[NUM_LEDS];
+
 // 电量显示LED
 #define LED_BAT 13
 
@@ -233,6 +240,17 @@ void setup()
   command.add('J', lpfZeropoint, "lpf zeropoint");
   command.add('K', StabRollAngle, "pid roll angle");
   command.add('L', lpfRoll, "lpf roll");
+
+  //小车前端装饰灯初始化
+  FastLED.addLeds<WS2812B, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+  FastLED.setBrightness(max_bright);
+  leds[0].r = 0;
+  leds[0].g = 25;
+  leds[0].b = 25;
+  leds[1].r = 25;
+  leds[1].g = 0;
+  leds[1].b = 25;
+  FastLED.show();
 
   // command.add('M', Stabtest_zeropoint, "test_zeropoint");
 
